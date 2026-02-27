@@ -38,4 +38,4 @@ function createSsoUrl(user) {
 res.redirect(createSsoUrl({ email: 'jane@example.com', username: 'jane', name: 'Jane Doe' }));
 ```
 
-For more details, see the [JWT SSO support article](https://www.websitetoolbox.com/support/article/1045).
+For more details, see the [JWT SSO support article](https://www.websitetoolbox.com/support/single-sign-on-jwt-1045).
