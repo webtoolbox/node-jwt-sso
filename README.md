@@ -16,7 +16,7 @@ const CLIENT_SECRET = 'YOUR_CLIENT_SECRET'; // From Integrate > Single Sign On
 const CLIENT_ISSUER_ID = 'YOUR_CLIENT_ISSUER_ID'; // From Integrate > Single Sign On
 const FORUM_DOMAIN = 'YOUR_FORUM_DOMAIN'; // e.g. forum.example.com
 
-function createSsoUrl(user) {
+function createSsoUrl(user, jump) {
     const token = jwt.sign(
         {
             email: user.email,    // Required
@@ -31,11 +31,18 @@ function createSsoUrl(user) {
         }
     );
 
-    return `https://${FORUM_DOMAIN}/oauth?action=doOauthCallback&service=JWT&code=${encodeURIComponent(token)}`;
+    let url = `https://${FORUM_DOMAIN}/oauth?action=doOauthCallback&service=JWT&code=${encodeURIComponent(token)}`;
+    if (jump) {
+        url += `&jump=${encodeURIComponent(jump)}`;
+    }
+    return url;
 }
 
 // Redirect the logged-in user to the forum:
 res.redirect(createSsoUrl({ email: 'jane@example.com', username: 'jane', name: 'Jane Doe' }));
+
+// Redirect to a specific page after login (using the optional jump parameter):
+res.redirect(createSsoUrl({ email: 'jane@example.com', username: 'jane', name: 'Jane Doe' }, `https://${FORUM_DOMAIN}/categories`));
 ```
 
 For more details, see the [JWT SSO support article](https://www.websitetoolbox.com/support/single-sign-on-jwt-1045).
